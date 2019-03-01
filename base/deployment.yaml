@@ -1,0 +1,39 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: external-dns
+    release: external-dns
+  name: external-dns
+spec:
+  template:
+    metadata:
+      labels:
+        app: external-dns
+        heritage: Tiller
+        release: external-dns
+    spec:
+      containers:
+      - args:
+        - --log-level=info
+        - --policy=upsert-only
+        - --provider=aws
+        - --registry=txt
+        - --interval=1m
+        - --source=service
+        - --source=ingress
+        env:
+        - name: AWS_DEFAULT_REGION
+          value: us-east-1
+        image: registry.opensource.zalan.do/teapot/external-dns:v0.5.9
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 7979
+        name: external-dns
+        ports:
+        - containerPort: 7979
+        volumeMounts: null
+      serviceAccountName: default
+      volumes: []
