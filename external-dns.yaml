@@ -43,7 +43,7 @@ spec:
         env:
         - name: AWS_DEFAULT_REGION
           value: us-east-1
-        image: registry.opensource.zalan.do/teapot/external-dns:v0.5.9
+        image: registry.opensource.zalan.do/teapot/external-dns:v0.5.12
         imagePullPolicy: IfNotPresent
         livenessProbe:
           httpGet:
